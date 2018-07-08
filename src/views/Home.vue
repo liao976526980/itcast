@@ -9,7 +9,7 @@
                 </el-col>
                 <el-col :span="19"><div class="grid-content bg-purple-light"><h2 class="middle">电商后台管理系统</h2></div></el-col>
                 <el-col :span="1"><div class="grid-content bg-purple">
-                    <a href="#" class="logout">退出</a>
+                    <a href="#" class="logout" @click.prevent="handleLogout">退出</a>
                     </div></el-col>
             </el-row>
         </el-header>
@@ -76,7 +76,20 @@
 </template>
 
 <script>
-export default {};
+export default {
+  // 判断是否登录
+  beforeCreate() {
+    // 从sessionStorage 中获取token, 判断是否有token
+    console.log(sessionStorage);
+    const token = sessionStorage.getItem('token');
+    if (!token) {
+      // 如果没有token，返回登录页面
+      this.$router.push({ name: 'login' });
+      // 提示
+      this.$message.warning('请先登录');
+    }
+  }
+};
 </script>
 
 <style>
@@ -90,22 +103,22 @@ export default {};
 }
 
 .header .middle {
-    line-height: 60px;
-    color: #fff;
-    text-align: center;
+  line-height: 60px;
+  color: #fff;
+  text-align: center;
 }
 
 .header .logout {
-    line-height: 60px;
-    text-decoration: none;
-    color: gold;
+  line-height: 60px;
+  text-decoration: none;
+  color: gold;
 }
 
 .aside {
   background-color: #d3dce6;
 }
 .aside .menu {
-    height: 100%;
+  height: 100%;
 }
 .main {
   background-color: #e9eef3;
