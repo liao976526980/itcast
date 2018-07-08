@@ -1,6 +1,6 @@
 <template>
     <div class="login-wrap">
-    <el-form label-position="top" label-width="80px" :model="formData " class="login-from">
+    <el-form label-position="top" label-width="80px" :model="formData " class="login-form">
         <h2>用户登录</h2>
         <el-form-item label="用户名">
             <el-input v-model="formData.username"></el-input>
@@ -55,14 +55,14 @@ export default {
   align-items: center;
 }
 
-.login-wrap .login-from {
+.login-wrap .login-form {
   background-color: #fff;
   width: 400px;
   padding: 30px;
   border-radius: 5px;
 }
 
-.login-wrap .login-from .login-btn {
+.login-wrap .login-form .login-btn {
   width: 100%;
 }
 </style>
