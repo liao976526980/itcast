@@ -47,7 +47,45 @@
 
 <script>
 export default {
+  data() {
+    return {
+      // 用户列表数据
+      list: [],
+      // true显示正在加载,false的时候不显示
+      loading:true
+    };
+  },
+  created() {
+    // 发送请求获取数据
+    this.loadData();
+  },
+  methods: {
+    // 发送异步请求获取数据
+    async loadData() {
+      // 发送异步请求之前
+      this.loading = true;
+      // 发送请求之前, 获取token
+      const token = sessionStorage.getItem('token');
+      // 在请求头中设置token
+      this.$http.defaults.headers.common['Authorization'] = token;
 
+      const res = await this.$http.get('users?pagenum=1&pagesize=10');
+
+      // 异步请求结束
+      this.loading = false;
+      
+      // 获取响应数据
+      const data = res.data; 
+      // meta中的msg和status
+      const { meta: { msg, status } } = data;
+      if (status === 200) {
+        const { data: { users } } = data;
+        this.list = users;
+      } else {
+        this.$message.error(msg);
+      }
+    }
+  }
 };
 </script>
 
