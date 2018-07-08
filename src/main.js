@@ -5,7 +5,7 @@ import App from './App';
 import router from './router';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-
+import './assets/css/style.css';
 // 注册elementUI插件
 Vue.use(ElementUI);
 
