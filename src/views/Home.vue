@@ -80,13 +80,24 @@ export default {
   // 判断是否登录
   beforeCreate() {
     // 从sessionStorage 中获取token, 判断是否有token
-    console.log(sessionStorage);
+    // console.log(sessionStorage);
     const token = sessionStorage.getItem('token');
     if (!token) {
       // 如果没有token，返回登录页面
       this.$router.push({ name: 'login' });
       // 提示
       this.$message.warning('请先登录');
+    }
+  },
+  methods: {
+    // 退出
+    handleLogout() {
+      // 删除sessionStorage中的token
+      sessionStorage.clear();
+      // 跳转登录页面
+      this.$router.push({ name: 'login' });
+      // 提示
+      this.$message.success('退出成功');
     }
   }
 };
