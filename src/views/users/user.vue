@@ -41,6 +41,42 @@
                 prop="mobile"
                 label="电话">
               </el-table-column>
+            <el-table-column label="创建日期">
+              <template slot-scope="scope">
+                {{ scope.row.create_time | fmtDate('YYYY-MM-DD') }}
+              </template>
+            </el-table-column>
+            <el-table-column label="用户状态" width="100">
+              <template slot-scope="scope">
+                <el-switch
+                  v-model="scope.row.mg_state"
+                  active-color="#13ce66"
+                  inactive-color="#ff4949">
+                </el-switch>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作">
+              <template slot-scope="scope">
+                  <el-button
+                    plain
+                    size="mini"
+                    type="primary"
+                    icon="el-icon-edit">
+                  </el-button>
+                  <el-button
+                    plain
+                    size="mini"
+                    type="danger"
+                    icon="el-icon-delete">
+                  </el-button>
+                  <el-button
+                    plain
+                    size="mini"
+                    type="warning"
+                    icon="el-icon-check">
+                  </el-button>
+                </template>
+            </el-table-column>
             </el-table>
     </el-card>
 </template>
@@ -52,7 +88,7 @@ export default {
       // 用户列表数据
       list: [],
       // true显示正在加载,false的时候不显示
-      loading:true
+      loading: true
     };
   },
   created() {
@@ -73,9 +109,8 @@ export default {
 
       // 异步请求结束
       this.loading = false;
-      
       // 获取响应数据
-      const data = res.data; 
+      const data = res.data;
       // meta中的msg和status
       const { meta: { msg, status } } = data;
       if (status === 200) {

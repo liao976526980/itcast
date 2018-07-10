@@ -7,13 +7,13 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import '@/assets/css/style.css';
 import MyAxios from '@/plugins/MyAxios';
-import common from 'common';
+import moment from 'moment';
 
 Vue.config.productionTip = false;
 
 //  全局过滤器,格式化日期
 Vue.filter('fmtDate', (value, fmString) => {
-  return common(value).format(fmString);
+  return moment(value).format(fmString);
 });
 // 注册MyAxios插件
 Vue.use(MyAxios);
