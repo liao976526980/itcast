@@ -45,42 +45,43 @@
                 prop="mobile"
                 label="电话">
               </el-table-column>
-                <el-table-column label="创建日期">
-                  <template slot-scope="scope">
-                    {{ scope.row.create_time | fmtDate('YYYY-MM-DD') }}
+              <el-table-column label="创建日期">
+                <template slot-scope="scope">
+                  {{ scope.row.create_time | fmtDate('YYYY-MM-DD') }}
+                </template>
+              </el-table-column>
+              <el-table-column label="用户状态" width="100">
+                <template slot-scope="scope">
+                  <el-switch
+                    @change="handleSwitchChange(scope.row)"
+                    v-model="scope.row.mg_state"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949">
+                  </el-switch>
+                </template>
+              </el-table-column>
+              <el-table-column label="操作">
+                <template slot-scope="scope">
+                    <el-button
+                      plain
+                      size="mini"
+                      type="primary"
+                      icon="el-icon-edit">
+                    </el-button>
+                    <el-button
+                      plain
+                      size="mini"
+                      type="danger"
+                      icon="el-icon-delete">
+                    </el-button>
+                    <el-button
+                      plain
+                      size="mini"
+                      type="warning"
+                      icon="el-icon-check">
+                    </el-button>
                   </template>
-                </el-table-column>
-                <el-table-column label="用户状态" width="100">
-                  <template slot-scope="scope">
-                    <el-switch
-                      v-model="scope.row.mg_state"
-                      active-color="#13ce66"
-                      inactive-color="#ff4949">
-                    </el-switch>
-                  </template>
-                </el-table-column>
-                <el-table-column label="操作">
-                  <template slot-scope="scope">
-                      <el-button
-                        plain
-                        size="mini"
-                        type="primary"
-                        icon="el-icon-edit">
-                      </el-button>
-                      <el-button
-                        plain
-                        size="mini"
-                        type="danger"
-                        icon="el-icon-delete">
-                      </el-button>
-                      <el-button
-                        plain
-                        size="mini"
-                        type="warning"
-                        icon="el-icon-check">
-                      </el-button>
-                    </template>
-                </el-table-column>
+              </el-table-column>
             </el-table>
             <!-- 分页 -->
             <el-pagination
@@ -161,6 +162,21 @@ export default {
     handleSearch() {
       // 带上查询参数
       this.loadData();
+    },
+    // 当开关的状态发生改变
+    async handleSwitchChange(user) {
+      console.log(user);
+      const res = await this.$http.put(`users/${user.id}/state/${user.mg_state}`);
+      console.log(res);
+      // 响应对象 res = { data, status }
+      // 服务器返回的数据格式 res.data = {data:{}, meta: {} }
+      const data = res.data;
+      const { meta: {status, msg} } = data;
+      if (status === 200) {
+        this.$message.success(msg);
+      } else {
+        this.$message.error(msg);
+      }
     }
   }
 };
