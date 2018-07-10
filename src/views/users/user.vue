@@ -69,6 +69,7 @@
                       icon="el-icon-edit">
                     </el-button>
                     <el-button
+                      @click="handleDelete(scope.row.id)"
                       plain
                       size="mini"
                       type="danger"
@@ -124,13 +125,13 @@ export default {
       this.currentPage = 1;
       this.loadData();
       // size发生变化
-      console.log(`每页 ${val} 条`);
+      // console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
       this.currentPage = val;
       this.loadData();
       // 页码发生变化
-      console.log(`当前页: ${val}`);
+      // console.log(`当前页: ${val}`);
     },
     // 发送异步请求获取数据
     async loadData() {
@@ -165,9 +166,9 @@ export default {
     },
     // 当开关的状态发生改变
     async handleSwitchChange(user) {
-      console.log(user);
+      // console.log(user);
       const res = await this.$http.put(`users/${user.id}/state/${user.mg_state}`);
-      console.log(res);
+      // console.log(res);
       // 响应对象 res = { data, status }
       // 服务器返回的数据格式 res.data = {data:{}, meta: {} }
       const data = res.data;
@@ -177,6 +178,40 @@ export default {
       } else {
         this.$message.error(msg);
       }
+    },
+    // 删除
+    // 1.给删除按钮,注册事件
+    // 2.提示是否删除
+    // 3.发生请求
+    async handleDelete(id) {
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        // 包裹await的函数都要加上 async
+        // 点击确认按钮执行
+        const res = await this.$http.delete(`users/${id}`);
+        // console.log(res);
+        // 服务器返回的数据
+        const data = res.data;
+        // meta内部的status和msg
+        const { meta: { status, msg } } = data;
+        if (status === 200) {
+          // 删除成功加载数据
+          this.currentPage = 1;
+          this.loadData();
+          this.$message({
+            type: 'success',
+            message: msg
+          });
+        };
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
     }
   }
 };
