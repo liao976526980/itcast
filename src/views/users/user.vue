@@ -9,8 +9,12 @@
             <!-- 搜索区域 -->
             <el-row class="searchArea">
               <el-col :span="24">
-                <el-input placeholder="请输入内容" class="searchInput">
-                  <el-button slot="append" icon="el-icon-search"></el-button>
+                <!-- 搜索功能
+                    1.绑定搜索文本框
+                    2.给按钮搜索绑定事件
+                 -->
+                <el-input v-model="searchValue" placeholder="请输入内容" class="searchInput" clearable>
+                  <el-button @click="handleSearch" slot="append" icon="el-icon-search"></el-button>
                 </el-input>
                 <el-button type="success" plain>添加用户</el-button>
               </el-col>
@@ -83,7 +87,7 @@
               @size-change="handleSizeChange"
               @current-change="handleCurrentChange"
               :current-page="currentPage"
-              :page-sizes="[2, 4, 6, 8]"
+              :page-sizes="[ 4, 6, 8]"
               :page-size="pageSize"
               layout="total, sizes, prev, pager, next, jumper"
               :total="total">
@@ -99,9 +103,12 @@ export default {
       list: [],
       // true显示正在加载,false的时候不显示
       loading: true,
-      pageSize: 2,
+      pageSize: 4,
       currentPage: 1,
-      total: 0
+      // 总共的数据条数,从服务器获取
+      total: 0,
+      // 绑定搜索文本框
+      searchValue: ''
     };
   },
   created() {
@@ -133,7 +140,7 @@ export default {
       // 在请求头中设置token
       this.$http.defaults.headers.common['Authorization'] = token;
 
-      const res = await this.$http.get(`users?pagenum=${this.currentPage}&pagesize=${this.pageSize}`);
+      const res = await this.$http.get(`users?pagenum=${this.currentPage}&pagesize=${this.pageSize}&query=${this.searchValue}`);
 
       // 异步请求结束
       this.loading = false;
@@ -149,6 +156,11 @@ export default {
       } else {
         this.$message.error(msg);
       }
+    },
+    // 搜索按钮
+    handleSearch() {
+      // 带上查询参数
+      this.loadData();
     }
   }
 };
