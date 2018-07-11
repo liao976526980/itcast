@@ -64,6 +64,7 @@
           <template slot-scope="scope">
               <el-button
                 plain
+                @click="editUserDialogVisible=true"
                 size="mini"
                 type="primary"
                 icon="el-icon-edit">
@@ -119,6 +120,28 @@
           <el-button type="primary" @click="handleAdd">确 定</el-button>
         </div>
       </el-dialog>
+      <!-- 编辑用户 -->
+      <el-dialog title="修改用户" :visible.sync="editUserDialogVisible">
+        <el-form
+          ref="myform"
+          :rules="formRulres"
+          label-width="100px"
+          :model="formData">
+          <el-form-item prop="username" label="用户名">
+            <el-input v-model="formData.username" auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="邮箱">
+            <el-input v-model="formData.email" auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="电话">
+            <el-input v-model="formData.mobile" auto-complete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="editUserDialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="handleEdit">确 定</el-button>
+        </div>
+      </el-dialog>
     </el-card>
 </template>
 
@@ -138,6 +161,8 @@ export default {
       searchValue: '',
       // 控制添加用户的对话显示和隐藏
       addUserDialogVisible: false,
+      // 编辑用户的对话框显示或者隐藏
+      editUserDialogVisible: false,
       formData: {
         username: '',
         password: '',
