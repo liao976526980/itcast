@@ -95,7 +95,7 @@
         :total="total">
       </el-pagination>
       <!-- 添加用户的弹出框 -->
-      <el-dialog title="添加用户" :visible.sync="addUserDialogVisible">
+      <el-dialog @closed="handleClose" title="添加用户" :visible.sync="addUserDialogVisible">
         <el-form
           ref="myform"
           :rules="formRulres"
@@ -278,11 +278,15 @@ export default {
           this.$message.success(msg);
           // 重新加载数据
           this.loadData();
-          for (let key in this.formData) {
-            this.formData[key] = '';
-          }
+        } else {
+          this.$message.error(msg);
         }
       });
+    },
+    handleClose() {
+      for (let key in this.formData) {
+        this.formData[key] = '';
+      };
     }
   }
 };
