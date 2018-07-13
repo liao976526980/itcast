@@ -77,6 +77,7 @@
                 icon="el-icon-delete">
               </el-button>
               <el-button
+                @click="setRoleDialogVisible = true"
                 plain
                 size="mini"
                 type="warning"
@@ -142,6 +143,24 @@
           <el-button type="primary" @click="handleEdit">确 定</el-button>
         </div>
       </el-dialog>
+      <!-- 分配角色 -->
+      <el-dialog title="分配角色" :visible.sync="setRoleDialogVisible">
+        <el-form
+          label-width="100px">
+          <el-form-item prop="username" label="当前用户名">
+          </el-form-item>
+        <el-form-item label="角色">
+          <el-select>
+            <el-option disabled label="请选择" value="-1">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="setRoleDialogVisible = false">取 消</el-button>
+          <el-button type="primary" >确 定</el-button>
+        </div>
+      </el-dialog>
     </el-card>
 </template>
 
@@ -163,6 +182,8 @@ export default {
       addUserDialogVisible: false,
       // 编辑用户的对话框显示或者隐藏
       editUserDialogVisible: false,
+      // 分配角色对话框显示或者隐藏
+      setRoleDialogVisible: false,
       formData: {
         username: '',
         password: '',
