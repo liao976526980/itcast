@@ -64,7 +64,7 @@
           <template slot-scope="scope">
               <el-button
                 plain
-                @click="editUserDialogVisible=true"
+                @click="handleShowEditDialog(scope.row)"
                 size="mini"
                 type="primary"
                 icon="el-icon-edit">
@@ -312,6 +312,13 @@ export default {
       for (let key in this.formData) {
         this.formData[key] = '';
       };
+    },
+    // 点击编辑按钮,显示编辑信息
+    handleShowEditDialog(user) {
+      // 显示对话框
+      this.editUserDialogVisible = true;
+      // 文本框显示用户信息
+      this.formData = user;
     }
   }
 };
