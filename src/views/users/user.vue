@@ -376,7 +376,7 @@ export default {
     },
     // 点击分配权限按钮,打开权限分配对话框
     async handleShowSetRoleDiong(user) {
-       // 记录当前用户的id
+      // 记录当前用户的id
       this.currentUserId = user.id;
       // console.log(user);
       this.currentUserName = user.username;
@@ -397,7 +397,7 @@ export default {
       });
       const data = res.data;
       const { meta: { status, msg } } = data;
-      if(status === 200){
+      if (status === 200) {
         // 成功
         // 关闭对话框
         this.setRoleDialogVisible = false;
