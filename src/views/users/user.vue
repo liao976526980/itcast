@@ -77,7 +77,7 @@
                 icon="el-icon-delete">
               </el-button>
               <el-button
-                @click="setRoleDialogVisible = true"
+                @click="handleShowSetRoleDiong(scope.row)"
                 plain
                 size="mini"
                 type="warning"
@@ -148,10 +148,18 @@
         <el-form
           label-width="100px">
           <el-form-item prop="username" label="当前用户名">
+            {{ currentUserName }}
           </el-form-item>
         <el-form-item label="角色">
-          <el-select>
-            <el-option disabled label="请选择" value="-1">
+          <el-select v-model="currentRoleId">
+            <el-option disabled label="请选择" :value="-1">
+              <!-- 下拉框绑定的类型,和option的value的类型值是一致的 -->
+            </el-option>
+            <el-option
+              v-for="item in roles"
+              :key="item.id"
+              :label="item.roleName"
+              :value="item.id">
             </el-option>
           </el-select>
         </el-form-item>
@@ -200,7 +208,11 @@ export default {
           { required: true, message: '请输入密码', trigger: 'blur' },
           { min: 3, max: 6, message: '长度在 3 到 6 个字符', trigger: 'blur' }
         ]
-      }
+      },
+      // 分配角色需要的数据
+      currentUserName: '',
+      currentRoleId: -1,
+      roles: []
     };
   },
   created() {
@@ -360,6 +372,20 @@ export default {
         // 修改失败
         this.$message.error(msg);
       }
+    },
+    // 点击分配权限按钮,打开权限分配对话框
+    async handleShowSetRoleDiong(user) {
+      // console.log(user);
+      this.currentUserName = user.username;
+      // 显示对话框
+      this.setRoleDialogVisible = true;
+      // 获取所有的角色
+      const res = await this.$http.get('roles');
+      // console.log(res);
+      this.roles = res.data.data;
+      // 根据用户id查询用户对象,角色ID
+      const res1 = await this.$http.get(`users/${user.id}`);
+      this.currentRoleId = res1.data.data.rid;
     }
   }
 };
