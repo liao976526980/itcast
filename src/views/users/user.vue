@@ -319,6 +319,26 @@ export default {
       this.editUserDialogVisible = true;
       // 文本框显示用户信息
       this.formData = user;
+    },
+    async handleEdit() {
+      const res = await this.$http.put(`users/${this.formData.id}`, {
+        mobile: this.formData.mobile,
+        email: this.formData.email
+      });
+      // 解析数据
+      const data = res.data;
+      const { meta: { status, msg } } = data;
+      if (status === 200) {
+        // 修改成功
+        this.$message.success(msg);
+        // 关闭对话框
+        this.editUserDialogVisible = false;
+        // 重新加载列表
+        this.loadData();
+      } else {
+        // 修改失败
+        this.$message.error(msg);
+      }
     }
   }
 };
